@@ -6,19 +6,18 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.TextView;
 
 /**
  * Author: SharerMax
  * Time  : 2015/6/10
  * E-Mail: mdcw1103@gmail.com
  */
-public class Button extends View {
+public class FlatButton extends TextView {
     private Paint mPaint;
     private boolean mAnimation;
     private float mStartX;
@@ -26,46 +25,52 @@ public class Button extends View {
     private float mStartR;
     private double mMaxRadius;
     private Paint mAnimationPaint;
-    public Button(Context context) {
+    private float mAnimationSpeed = 3;
+    public FlatButton(Context context) {
         super(context);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
-    public Button(Context context, AttributeSet attrs) {
+    public FlatButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        init(context, attrs);
     }
 
-    public Button(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FlatButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Button(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public FlatButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlatButton);
+        mAnimationSpeed = typedArray.getFloat(R.styleable.FlatButton_animationSpeed, 3);
+        typedArray.recycle();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        mPaint.setColor(Color.BLUE);
-        RectF rect = new RectF(0, 0, getWidth(), getHeight());
-        canvas.drawRoundRect(rect, 8, 8, mPaint);
-        String text = "Test";
-        mPaint.setTextSize(200);
-        mPaint.setColor(Color.YELLOW);
-        canvas.drawText(text, 0, getHeight(), mPaint);
         if (mAnimation) {
-//            canvas.save();
             Paint paint = initAnimationPaint();
             canvas.drawCircle(mStartX, mStartY, mStartR, paint);
-            mStartR += 16;
+            mStartR += mAnimationSpeed;
             if (mStartR > mMaxRadius) {
                 mAnimation = false;
             }
-//            canvas.restore();
             invalidate();
         }
     }
