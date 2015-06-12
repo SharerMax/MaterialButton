@@ -19,8 +19,11 @@
         android:layout_height="wrap_content"
         android:text="Test"
         android:textSize="48sp"
-        android:textColor="#FF0000"
+        android:textColor="#00FF00"
+        android:background="#FF0000"
         android:layout_below="@+id/textview"
-        app:animationSpeed="5"/>
+        app:rippleSpeed="5"
+        app:afterRippleClicked="true"
+        app:rippleColor="#88DDDDDD"/>
 
 </RelativeLayout>

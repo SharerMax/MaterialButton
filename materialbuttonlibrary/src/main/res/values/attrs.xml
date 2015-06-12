@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FlatButton">
-        <attr name="animationSpeed" format="float"/>
+        <attr name="rippleSpeed" format="float"/>
+        <attr name="afterRippleClicked" format="boolean"/>
+        <attr name="rippleColor" format="color"/>
     </declare-styleable>
 </resources>
